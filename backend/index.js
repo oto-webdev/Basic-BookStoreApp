@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import mongoose from 'mongoose'
 
 dotenv.config()
 
@@ -10,6 +11,12 @@ const port = process.env.PORT || 4000;
 app.use(express.json())
 app.use(cors())
 
-app.listen(port, () => {
-    console.log("Server started")
+mongoose.connect(process.env.MONGO_URI).then(()=>{
+    console.log("Connected to database")
+    app.listen(port, () => {
+        console.log("Server started")
+    })
+}).catch((error)=>{
+    console.log(error)
+    process.exit(1)
 })
